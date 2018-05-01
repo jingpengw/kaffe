@@ -69,6 +69,7 @@ class Blend(object):
             c = a.merge(b)
             shape = v[:-3] + tuple(c.size())
             # Inference with overlapping window.
+            print(fov, shape, c)
             if self.blend:
                 self.data[k] = WTDM(shape, fov, c.min())
                 self.op = 'np.add'

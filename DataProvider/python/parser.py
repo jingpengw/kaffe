@@ -99,11 +99,13 @@ class Parser(object):
 
         # FoV
         fov = self.net_spec[name][-3:]
-        config.set(data, 'fov', fov)
+        print('fov: {}'.format(fov))
+        assert isinstance(fov, tuple)
+        config.set(data, 'fov', str(fov))
 
         # Offset
         if not config.has_option(data, 'offset'):
-            config.set(data, 'offset', (0,0,0))
+            config.set(data, 'offset', str((0,0,0)))
 
         # Add mask if data is label.
         if self.auto_mask and 'label' in data:

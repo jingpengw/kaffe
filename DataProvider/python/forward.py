@@ -164,7 +164,7 @@ class ForwardScanner(object):
 
         # Automatic full spanning.
         if grid == 0:
-            grid = (cmax - cmin - 1)/stride + 1
+            grid = (cmax - cmin - 1)//stride + 1
             coord.add(cmax-1)  # Offcut
 
         # Scan coordinates.
