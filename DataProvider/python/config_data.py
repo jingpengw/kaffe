@@ -9,10 +9,10 @@ Kisuk Lee <kisuklee@mit.edu>, 2016
 import copy
 import numpy as np
 
-import emio
-from tensor import TensorData
-from transform import *
-from utils import *
+from . import emio
+from .tensor import TensorData
+from .transform import *
+from .utils import *
 
 class ConfigData(TensorData):
     """

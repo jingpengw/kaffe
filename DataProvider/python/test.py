@@ -2,9 +2,9 @@
 import h5py
 import os
 
-from data_provider import VolumeDataProvider
+from .data_provider import VolumeDataProvider
 import time
-from vector import Vec3d
+from .vector import Vec3d
 
 if __name__ == "__main__":
 
@@ -38,15 +38,15 @@ if __name__ == "__main__":
         start = time.time()
         sample = dp.random_sample()
         if True:
-            print 'Save as file...'
+            print('Save as file...')
             fname = 'sample%.2d.h5' % (i+1)
             if os.path.exists(fname):
                 os.remove(fname)
             f = h5py.File(fname)
-            for name, data in sample.iteritems():
+            for name, data in sample.items():
                 f.create_dataset('/' + name, data=data)
             f.close()
-        print time.time() - start
+        print(time.time() - start)
 
 
     # # Dump the whole dataset.

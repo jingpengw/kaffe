@@ -6,8 +6,8 @@ Box augmentation.
 Kisuk Lee <kisuklee@mit.edu>, 2017
 """
 
-from box import *
-import data_augmentation
+from .box import *
+from . import data_augmentation
 import math
 import numpy as np
 

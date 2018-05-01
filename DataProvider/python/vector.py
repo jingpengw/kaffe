@@ -71,7 +71,7 @@ class Vec3d(object):
         else:
             return True
 
-    def __nonzero__(self):
+    def __bool__(self):
         return self.x or self.y or self.z
 
     # Generic operator handlers
@@ -461,14 +461,14 @@ if __name__ == "__main__":
             inplace_vec /= (3, 6, 9)
             inplace_vec += Vec3d(-1, -1, -1)
             alternate = (inplace_src*.5 + .5)/Vec3d(3, 6, 9) + [-1, -1, -1]
-            self.assertEquals(inplace_vec, inplace_ref)
-            self.assertEquals(inplace_vec, alternate)
+            self.assertEqual(inplace_vec, inplace_ref)
+            self.assertEqual(inplace_vec, alternate)
 
         def testPickle(self):
             testvec = Vec3d(5, .3, 8.6)
             testvec_str = pickle.dumps(testvec)
             loaded_vec = pickle.loads(testvec_str)
-            self.assertEquals(testvec, loaded_vec)
+            self.assertEqual(testvec, loaded_vec)
 
         def testVec3dMinMax(self):
             vmin = minimum((1,2,3),(3,2,1))

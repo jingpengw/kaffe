@@ -7,8 +7,8 @@ Kisuk Lee <kisuklee@mit.edu>, 2015-2016
 """
 
 import numpy as np
-import transform
-import utils
+from . import transform
+from . import utils
 
 class LabelFunction(object):
     """

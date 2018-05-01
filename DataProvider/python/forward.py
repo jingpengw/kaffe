@@ -9,11 +9,11 @@ Kisuk Lee <kisuklee@mit.edu>, 2016
 import numpy as np
 import math
 
-import blend
-from box import Box, centered_box
-from tensor import WritableTensorData as WTD, WritableTensorDataWithMask as WTDM
+from . import blend
+from .box import Box, centered_box
+from .tensor import WritableTensorData as WTD, WritableTensorDataWithMask as WTDM
 import time
-from vector import *
+from .vector import *
 
 class ForwardScanner(object):
     """
@@ -46,7 +46,7 @@ class ForwardScanner(object):
             assert self.current is None
             idx = self.counter
             loc = self.locs[idx]
-            print '({}/{}) loc: {}'.format(idx+1, len(self.locs), tuple(loc))
+            print('({}/{}) loc: {}'.format(idx+1, len(self.locs), tuple(loc)))
             ret, _ = self.dataset.get_sample(loc)
             self.current = loc
             self.counter += 1
@@ -110,7 +110,7 @@ class ForwardScanner(object):
         TODO(kisuk): Documentation.
         """
         stride = None
-        for k, v in self.scan_spec.iteritems():
+        for k, v in self.scan_spec.items():
             box = centered_box(Vec3d(0,0,0), v[-3:])
             if stride is None:
                 stride = box
@@ -192,7 +192,7 @@ class ForwardScanner(object):
 
 if __name__ == "__main__":
 
-    import data_provider
+    from . import data_provider
 
     # Data spec path
     dspec_path = 'test_spec/piriform.spec'

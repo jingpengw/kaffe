@@ -31,7 +31,7 @@ def test_net(iter, solver, test_iter, dp, monitor=None):
 
         # Set inputs.
         sample = dp.random_sample()
-        for k, v in sample.iteritems():
+        for k, v in sample.items():
             # Assume a sole example in minibatch (single output patch).
             shape = (1,) + v.shape
             net.blobs[k].reshape(*shape)
@@ -58,5 +58,5 @@ def test_net(iter, solver, test_iter, dp, monitor=None):
     if monitor is not None:
         monitor.append_test(iter, stats)
     # Display.
-    print '[test] Iteration %d, loss: %.3f, cerr: %.3f, elapsed: %.3f s/iter'\
-          % (iter, stats['loss'], stats['cerr'], elapsed)
+    print('[test] Iteration %d, loss: %.3f, cerr: %.3f, elapsed: %.3f s/iter'\
+          % (iter, stats['loss'], stats['cerr'], elapsed))

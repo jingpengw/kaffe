@@ -9,8 +9,8 @@ Kisuk Lee <kisuklee@mit.edu>, 2015-2016
 import math
 import numpy as np
 
-from box import *
-from vector import *
+from .box import *
+from .vector import *
 import time
 import h5py
 from tempfile import mkdtemp
@@ -176,9 +176,9 @@ class WritableTensorData(TensorData):
         lval = 'self._data[:,vmin[0]:vmax[0],vmin[1]:vmax[1],vmin[2]:vmax[2]]'
         rval = 'patch'
         if op is None:
-            exec '{}={}'.format(lval, rval)
+            exec('{}={}'.format(lval, rval))
         else:
-            exec '{}={}({},{})'.format(lval, op, lval, rval)
+            exec('{}={}({},{})'.format(lval, op, lval, rval))
 
 
 class WritableTensorDataWithMask(WritableTensorData):
@@ -216,7 +216,7 @@ class WritableTensorDataWithMask(WritableTensorData):
         # Set normalization.
         self._norm.set_patch(pos, mask, op='np.add')
         t3 = time.time() - t0
-        print 'mask*patch: %.3f, set_patch: %.3f, set_mask: %.3f' % (t1, t2-t1, t3-t2)
+        print('mask*patch: %.3f, set_patch: %.3f, set_mask: %.3f' % (t1, t2-t1, t3-t2))
 
     def get_norm(self):
         return self._norm._data

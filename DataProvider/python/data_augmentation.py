@@ -8,7 +8,7 @@ Kisuk Lee <kisuklee@mit.edu>, 2016
 
 from collections import OrderedDict
 import numpy as np
-from transform import *
+from .transform import *
 
 """
 Data augmentaion pool.
@@ -64,7 +64,7 @@ class DataAugmentor(object):
             sample = aug.augment(sample, imgs=dataset.get_imgs())
 
         # Ensure that sample is ordered by key.
-        sample = OrderedDict(sorted(sample.items(), key=lambda x: x[0]))
+        sample = OrderedDict(sorted(list(sample.items()), key=lambda x: x[0]))
         return sample, transform
 
     def _prepare(self, dataset):
@@ -142,7 +142,7 @@ class GreyAugment(DataAugment):
         # Greyscale augmentation.
         imgs = kwargs['imgs']
         for key in imgs:
-            for z in xrange(sample[key].shape[-3]):
+            for z in range(sample[key].shape[-3]):
                 img = sample[key][...,z,:,:]
                 img *= 1 + (np.random.rand() - 0.5)*self.CONTRAST_FACTOR
                 img += (np.random.rand() - 0.5)*self.BRIGHTNESS_FACTOR
@@ -173,9 +173,9 @@ Whenever adding new data augmentation outside this module, it should be properly
 imported as below.
 """
 
-from misalign import MisalignAugment
-from warp import WarpAugment
-from missing_section import MissingAugment
-from blur import BlurAugment
-from blob import BlobAugment
-from box_augmentation import BoxAugment
+from .misalign import MisalignAugment
+from .warp import WarpAugment
+from .missing_section import MissingAugment
+from .blur import BlurAugment
+from .blob import BlobAugment
+from .box_augmentation import BoxAugment

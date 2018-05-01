@@ -1,5 +1,5 @@
 cy:
-	python setup.py build_ext -b ../..
+	python3 setup.py build_ext -b ../..
 
 clean:
 	rm -rf build

@@ -10,9 +10,9 @@ from collections import OrderedDict
 import copy
 import numpy as np
 
-from box import Box
-from config_data import ConfigData, ConfigLabel
-from vector import Vec3d
+from .box import Box
+from .config_data import ConfigData, ConfigLabel
+from .vector import Vec3d
 
 class Dataset(object):
     """
@@ -50,7 +50,7 @@ class VolumeDataset(Dataset):
         self.build_from_config(config)
         # Set dataset-specific params.
         self.params = dict()
-        for k, v in kwargs.iteritems():
+        for k, v in kwargs.items():
             self.params[k] = v
 
     def build_from_config(self, config):
@@ -88,7 +88,7 @@ class VolumeDataset(Dataset):
 
         # Set dataset spec.
         spec = dict()
-        for name, data in self._data.iteritems():
+        for name, data in self._data.items():
             spec[name] = tuple(data.fov())
         self.set_spec(spec)
 
@@ -105,7 +105,7 @@ class VolumeDataset(Dataset):
     def set_spec(self, spec):
         """Set spec and update valid range."""
         # Order by key
-        self._spec = OrderedDict(sorted(spec.items(), key=lambda x: x[0]))
+        self._spec = OrderedDict(sorted(list(spec.items()), key=lambda x: x[0]))
         self._update_range()
 
     def num_sample(self):
@@ -135,7 +135,7 @@ class VolumeDataset(Dataset):
         # and iterating over already-sorted self._spec together guarantee the
         # sample is sorted.
         sample = OrderedDict()
-        for name in self._spec.keys():
+        for name in list(self._spec.keys()):
             sample[name] = self._data[name].get_patch(pos)
 
         transform = dict()
@@ -198,7 +198,7 @@ class VolumeDataset(Dataset):
         each TensorData.
         """
         self._range = None
-        for name, dim in self._spec.iteritems():
+        for name, dim in self._spec.items():
             # Update patch size.
             self._data[name].set_fov(dim[-3:])
             # Update valid range.

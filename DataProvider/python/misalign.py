@@ -5,9 +5,9 @@ Karan Kathpalia <karank@cs.princeton.edu>
 Kisuk Lee <kisuklee@mit.edu>, 2016-2017
 """
 
-import data_augmentation
+from . import data_augmentation
 import numpy as np
-from utils import check_tensor
+from .utils import check_tensor
 
 class MisalignAugment(data_augmentation.DataAugment):
     """
@@ -39,7 +39,7 @@ class MisalignAugment(data_augmentation.DataAugment):
 
             # Randomly draw x/y translation independently.
             ret, pvt, zs = dict(), dict(), list()
-            for k, v in self.spec.iteritems():
+            for k, v in self.spec.items():
                 z, y, x = v[-3:]
                 assert z > 0
                 x_dim  = self.x_t + v[-1]
@@ -64,7 +64,7 @@ class MisalignAugment(data_augmentation.DataAugment):
                 self.do_augment = True
                 # Introduce misalignment at pivot.
                 pivot = np.random.randint(1, zmin - 1)
-                for k, v in pvt.iteritems():
+                for k, v in pvt.items():
                     offset = int(v - zmin)/2  # Compute offset.
                     pvt[k] = offset + pivot
                 self.pivot = pvt
@@ -89,7 +89,7 @@ class MisalignAugment(data_augmentation.DataAugment):
         ret = dict()
 
         if self.do_augment:
-            for k, v in sample.iteritems():
+            for k, v in sample.items():
                 # Ensure data is a 4D tensor.
                 data = check_tensor(v)
                 new_data = np.zeros(self.spec[k], dtype=data.dtype)

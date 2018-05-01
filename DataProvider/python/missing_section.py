@@ -6,7 +6,7 @@ Missing section data augmentation.
 Kisuk Lee <kisuklee@mit.edu>, 2017
 """
 
-import data_augmentation
+from . import data_augmentation
 import numpy as np
 
 class MissingAugment(data_augmentation.DataAugment):
@@ -97,7 +97,7 @@ class MissingAugment(data_augmentation.DataAugment):
         # Randomly draw z-slices to black out.
         if self.consecutive:
             zloc  = np.random.randint(0, zdim - num_sec + 1)
-            zlocs = range(zloc, zloc + num_sec)
+            zlocs = list(range(zloc, zloc + num_sec))
         else:
             zlocs = np.random.choice(zdim, num_sec, replace=False)
 

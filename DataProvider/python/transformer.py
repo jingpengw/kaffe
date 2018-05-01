@@ -8,7 +8,7 @@ Kisuk Lee <kisuklee@mit.edu>, 2017
 
 import numpy as np
 
-import transform as tf
+from . import transform as tf
 
 class Transformer(object):
     """
@@ -53,14 +53,14 @@ class Affinity(Transformer):
         msk = np.concatenate(msks, axis=0)
         # Rebalancing.
         if self.rebalance:
-            for c in xrange(aff.shape[0]):
+            for c in range(aff.shape[0]):
                 msk[c,...] *= tf.rebalance_binary_class(aff[c,...], msk=msk[c,...])
         # Update sample.
         sample[self.target] = aff
         sample[self.target+'_mask'] = msk
         # Crop.
         if self.crop is not None:
-            for k, v in sample.iteritems():
+            for k, v in sample.items():
                 sample[k] = tf.crop(v, offset=self.crop)
         return sample
 
@@ -100,14 +100,14 @@ class Affinity1(Transformer):
         msk = np.concatenate(msks, axis=0)
         # Rebalancing.
         if self.rebalance:
-            for c in xrange(aff.shape[0]):
+            for c in range(aff.shape[0]):
                 msk[c,...] *= tf.rebalance_binary_class(aff[c,...], msk=msk[c,...])
         # Update sample.
         sample[self.target] = aff
         sample[self.target+'_mask'] = msk
         # Crop.
         if self.crop is not None:
-            for k, v in sample.iteritems():
+            for k, v in sample.items():
                 sample[k] = tf.crop(v, offset=self.crop)
         return sample
 

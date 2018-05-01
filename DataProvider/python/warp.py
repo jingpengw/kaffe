@@ -6,12 +6,12 @@ Warp data augmentation.
 Kisuk Lee <kisuklee@mit.edu>, 2016
 """
 
-from box import Box
-import data_augmentation
-from warping import warping
+from .box import Box
+from . import data_augmentation
+from .warping import warping
 import numpy as np
-from utils import check_tensor, check_volume
-from vector import Vec3d
+from .utils import check_tensor, check_volume
+from .vector import Vec3d
 
 class WarpAugment(data_augmentation.DataAugment):
     """
@@ -46,7 +46,7 @@ class WarpAugment(data_augmentation.DataAugment):
 
         # Compute the largest image size.
         b = Box((0,0,0), (0,0,0))  # Empty box.
-        for k, v in spec.iteritems():
+        for k, v in spec.items():
             b = b.merge(Box((0,0,0), v[-3:]))
         maxsz = tuple(b.size())
 
@@ -67,7 +67,7 @@ class WarpAugment(data_augmentation.DataAugment):
         # Replace every shape to the largest required one.
         # TODO(kisuk): Is this correct?
         ret = dict()
-        for k, v in spec.iteritems():
+        for k, v in spec.items():
             if k in imgs:  # Images.
                 ret[k] = v[:-3] + self.size
             else:  # Labels and masks.
@@ -100,7 +100,7 @@ class WarpAugment(data_augmentation.DataAugment):
         imgs = kwargs['imgs']
 
         # Apply warp to each tensor.
-        for k, v in sample.iteritems():
+        for k, v in sample.items():
             v = check_tensor(v)
             v = np.transpose(v, (1,0,2,3))
             if k in imgs:  # Images.
@@ -124,7 +124,7 @@ if __name__ == "__main__":
 
     # In/out size.
     outsz = Vec3d(5,100,100)
-    for k, v in spec.iteritems():
+    for k, v in spec.items():
         newv = tuple(Vec3d(v[-3:]) + outsz - Vec3d(1,1,1))
         spec[k] = v[:-3] + newv
 
@@ -133,10 +133,10 @@ if __name__ == "__main__":
 
     # Test.
     ret = aug.prepare(spec, imgs=['input/p3','input/p2','input/p1'])
-    print ret
-    print aug.spec
-    print aug.rot
-    print aug.shear
-    print aug.scale
-    print aug.stretch
-    print aug.twist
+    print(ret)
+    print(aug.spec)
+    print(aug.rot)
+    print(aug.shear)
+    print(aug.scale)
+    print(aug.stretch)
+    print(aug.twist)

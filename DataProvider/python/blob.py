@@ -6,7 +6,7 @@ Blob augmentation.
 Kisuk Lee <kisuklee@mit.edu>, 2017
 """
 
-import data_augmentation
+from . import data_augmentation
 import numpy as np
 
 class BlobAugment(data_augmentation.DataAugment):

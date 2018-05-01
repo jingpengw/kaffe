@@ -8,15 +8,15 @@ Kisuk Lee <kisuklee@mit.edu>, 2016
 
 from collections import OrderedDict
 import numpy as np
-from utils import *
-from vector import Vec3d, minimum, maximum
+from .utils import *
+from .vector import Vec3d, minimum, maximum
 
 def transform_tensor(func, data, *args, **kwargs):
     """Apply func to each channel of data (4D tensor)."""
     data = check_tensor(data)
     arrs = list()
     f = globals()[func]
-    for c in xrange(data.shape[0]):
+    for c in range(data.shape[0]):
         vol = f(data[c,...], *args, **kwargs)
         arrs.append(check_tensor(vol))
     if len(arrs) > 1:
@@ -38,7 +38,7 @@ class SampleFunction(object):
     def _transform_sample(self, func, sample, *args, **kwargs):
         """Apply func to a sample."""
         ret = OrderedDict()
-        for key, data in sample.iteritems():
+        for key, data in sample.items():
             ret[key] = transform_tensor(func, data, *args, **kwargs)
         return ret
 
@@ -115,7 +115,7 @@ def standardize(img, mode='2D', dtype='float32'):
     f = lambda x: (x - np.mean(x)) / np.std(x)
 
     if mode == '2D':
-        for z in xrange(img.shape[0]):
+        for z in range(img.shape[0]):
             ret[z,:,:] = f(img[z,:,:])
     elif mode == '3D':
         ret[:] = f(img)

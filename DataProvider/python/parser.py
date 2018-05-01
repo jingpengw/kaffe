@@ -6,9 +6,9 @@ DataSpecParser class.
 Kisuk Lee <kisuklee@mit.edu>, 2016
 """
 
-import ConfigParser
+import configparser
 
-from vector import Vec3d
+from .vector import Vec3d
 
 class Parser(object):
     """
@@ -24,7 +24,7 @@ class Parser(object):
             params: Parameter dictionary.
         """
         # Construct a ConfigParser object.
-        config = ConfigParser.ConfigParser()
+        config = configparser.ConfigParser()
         config.read(dspec_path)
 
         # Set attributes.
@@ -46,13 +46,13 @@ class Parser(object):
         Returns:
             dataset: ConfigParser object containing dataset info.
         """
-        config = ConfigParser.ConfigParser()
+        config = configparser.ConfigParser()
 
         section = 'dataset'
         if self._config.has_section(section):
             config.add_section(section)
             #for name, data in self._config.items(section):
-            for name in self.net_spec.keys():
+            for name in list(self.net_spec.keys()):
                 if self._config.has_option(section, name):
                     data = self._config.get(section, name)
                     config.set(section, name, data)
@@ -68,7 +68,7 @@ class Parser(object):
         # Dataset-specific params.
         dparams = dict()
         dparams['dataset_id'] = dataset_id
-        for k, v in self.dparams.iteritems():
+        for k, v in self.dparams.items():
             dparams[k] = v[dataset_id]
 
         return config, dparams

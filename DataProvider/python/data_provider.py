@@ -8,11 +8,11 @@ Kisuk Lee <kisuklee@mit.edu>, 2015-2016
 
 from collections import OrderedDict
 import numpy as np
-import parser
-from dataset import VolumeDataset
-from data_augmentation import DataAugmentor
-from transform import *
-from label_transform import *
+from . import parser
+from .dataset import VolumeDataset
+from .data_augmentation import DataAugmentor
+from .transform import *
+from .label_transform import *
 
 class DataProvider(object):
     """
@@ -53,11 +53,11 @@ class VolumeDataProvider(DataProvider):
         dprior = params.get('dprior', None)  # Optional.
 
         # Build Datasets.
-        print '\n[VolumeDataProvider]'
+        print('\n[VolumeDataProvider]')
         p = parser.Parser(dspec_path, net_spec, params, auto_mask=auto_mask)
         self.datasets = list()
         for d in drange:
-            print 'constructing dataset %d...' % d
+            print('constructing dataset %d...' % d)
             config, dparams = p.parse_dataset(d)
             dataset = VolumeDataset(config, **dparams)
             self.datasets.append(dataset)
@@ -95,7 +95,7 @@ class VolumeDataProvider(DataProvider):
         # Transform sample.
         sample = self._transform(sample, transform)
         # Ensure that sample is ordered by key.
-        return OrderedDict(sorted(sample.items(), key=lambda x: x[0]))
+        return OrderedDict(sorted(list(sample.items()), key=lambda x: x[0]))
 
 
     ####################################################################
@@ -129,7 +129,7 @@ class VolumeDataProvider(DataProvider):
         TODO(kisuk): Documentation.
         """
         affinitized = False
-        for key, spec in transform.iteritems():
+        for key, spec in transform.items():
             if spec is not None:
                 if spec['type'] == 'affinitize':
                     affinitized = True
@@ -137,7 +137,7 @@ class VolumeDataProvider(DataProvider):
 
         # Crop by 1 if affinitized.
         if affinitized:
-            for key, data in sample.iteritems():
+            for key, data in sample.items():
                 sample[key] = tensor_func.crop(data, (1,1,1))
 
         return sample

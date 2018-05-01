@@ -57,8 +57,8 @@ snapshot      = cfg.getint('solver','snapshot')
 test_iter     = cfg.getint('solver','test_iter')
 test_interval = cfg.getint('train','test_interval')
 
-print 'Start training...'
-print 'Start from ', last_iter + 1
+print('Start training...')
+print('Start from ', last_iter + 1)
 
 # Timing.
 total_time = 0.0
@@ -69,7 +69,7 @@ for i in range(last_iter+1, solver.max_iter+1):
 
     # Set inputs.
     sample = dp['train'].random_sample()
-    for k, v in sample.iteritems():
+    for k, v in sample.items():
         # Assume a sole example in minibatch (single output patch).
         shape = (1,) + v.shape
         net.blobs[k].reshape(*shape)
@@ -98,11 +98,11 @@ for i in range(last_iter+1, solver.max_iter+1):
         monitor.append_train(i, stats)
         # Display.
         base_lr = cfg.getfloat('solver','base_lr')
-        print 'Iteration %7d, loss: %.3f, cerr: %.3f, '     \
+        print('Iteration %7d, loss: %.3f, cerr: %.3f, '     \
               'learning rate: %.6f, elapsed: %.3f s/iter'   \
-                % (i, stats['loss'], stats['cerr'], base_lr, elapsed)
+                % (i, stats['loss'], stats['cerr'], base_lr, elapsed))
         # Reset.
-        for key in stats.iterkeys():
+        for key in stats.keys():
             stats[key] = 0.0
         total_time = 0.0
         start = time.time()

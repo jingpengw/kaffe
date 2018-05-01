@@ -8,8 +8,8 @@ Kisuk Lee <kisuklee@mit.edu>, 2016
 
 import numpy as np
 
-import box
-from tensor import WritableTensorData as WTD, WritableTensorDataWithMask as WTDM
+from . import box
+from .tensor import WritableTensorData as WTD, WritableTensorDataWithMask as WTDM
 import time
 
 def prepare_outputs(spec, locs, blend=False, blend_mode=''):
@@ -39,7 +39,7 @@ class Blend(object):
 
     def push(self, loc, sample):
         """Write to data."""
-        for k, v in sample.iteritems():
+        for k, v in sample.items():
             assert k in self.data
             self.data[k].set_patch(loc, v, op=self.op)
 
@@ -62,7 +62,7 @@ class Blend(object):
 
         self.data = dict()
         self.op   = None
-        for k, v in self.spec.iteritems():
+        for k, v in self.spec.items():
             fov = v[-3:]
             a = box.centered_box(rmin, fov)
             b = box.centered_box(rmax, fov)
@@ -93,7 +93,7 @@ class BumpBlend(Blend):
         if blend:
             max_logits = dict()
             # Compute max_logit for numerical stability.
-            for k, v in self.data.iteritems():
+            for k, v in self.data.items():
                 fov = tuple(v.fov())
                 data = np.full(v.dim(), -np.inf, dtype='float32')
                 max_logit = WTD(data, fov, v.offset())
@@ -107,7 +107,7 @@ class BumpBlend(Blend):
         """Blend with data."""
         self.push_count += 1
 
-        for k, v in sample.iteritems():
+        for k, v in sample.items():
             assert k in self.data
             if self.push_count % 500 == 1:
                 self.data[k].flush_to_disk()
@@ -116,7 +116,7 @@ class BumpBlend(Blend):
             t1 = time.time() - t0
             self.data[k].set_patch(loc, v, op=self.op, mask=mask)
             t2 = time.time() - t0
-            print 'get_mask: %.3f, set_patch: %.3f' % (t1, t2-t1)
+            print('get_mask: %.3f, set_patch: %.3f' % (t1, t2-t1))
 
     ####################################################################
     ## Private methods.
@@ -136,9 +136,9 @@ class BumpBlend(Blend):
     def _bump_logit_map(self, dim):
         ret = self.logit_maps.get(dim)
         if ret is None:
-            x = range(dim[-1])
-            y = range(dim[-2])
-            z = range(dim[-3])
+            x = list(range(dim[-1]))
+            y = list(range(dim[-2]))
+            z = list(range(dim[-3]))
             zv, yv, xv = np.meshgrid(z, y, x, indexing='ij')
             xv = (xv+1.0)/(dim[-1]+1.0)
             yv = (yv+1.0)/(dim[-2]+1.0)

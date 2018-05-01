@@ -7,7 +7,7 @@ Kisuk Lee <kisuklee@mit.edu>, 2016
 """
 
 import shutil
-import ConfigParser
+import configparser
 import h5py
 import os
 import sys
@@ -46,7 +46,7 @@ scan_spec = {'output': (3, 18, 200, 200)}
 for dataset in dp.datasets:
     
     idx = dataset.params['dataset_id']
-    print 'Forward scan dataset {}'.format(idx)
+    print(('Forward scan dataset {}'.format(idx)))
 
     # Create ForwardScanner for the current dataset.
     fs = ForwardScanner(dataset, scan_spec, params=scan_params)
@@ -59,29 +59,28 @@ for dataset in dp.datasets:
         outs = dict()
         outs["output"] = net.forward(ins["input"])[0][...]
         if np.isnan(np.sum(outs["output"])):
-		print "Nan busted!"
-		import pdb; pdb.set_trace()
+            print("Nan busted!")
+            import pdb; pdb.set_trace()
         # Extract output data.
         fs.push(outs)    # Push current outputs.
         # Elapsed time.
-        print 'Elapsed: {}'.format(time.time() - start)
+        print(('Elapsed: {}'.format(time.time() - start)))
         ins = fs.pull()  # Fetch next inputs.
 
     # Save as file.
-    for key in fs.outputs.data.iterkeys():
+    for key in list(fs.outputs.data.keys()):
         start = time.time()
         fname = '{}_dataset{}_{}.h5'.format(save_prefix, idx+1, key)
-        print 'Save {}...'.format(fname)
+        print(('Save {}...'.format(fname)))
         f = h5py.File(fname)
         output = fs.outputs.get_data(key)
         f.create_dataset('/main', data=output)
         f.close()
-        print 'File Saving: {}'.format(time.time() - start)
+        print(('File Saving: {}'.format(time.time() - start)))
         try:
-           print ("Deleting temp folder...")
-           shutil.rmtree('/tmp/{}'.format(os.getpid())); 
-	except:
-	   print ("Couldn't remove the temp folder.")
+            print ("Deleting temp folder...")
+            shutil.rmtree('/tmp/{}'.format(os.getpid())); 
+        except:
+            print ("Couldn't remove the temp folder.")
         else:
-	   print ("Temp folder deleted.")
-
+            print ("Temp folder deleted.")
