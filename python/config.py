@@ -6,20 +6,19 @@ TrainConfig.
 Kisuk Lee <kisuklee@mit.edu>, 2016
 """
 
-import caffe
-import ConfigParser
+import configparser
 import os
+import pznet
 
 from DataProvider.python.data_provider import VolumeDataProvider
 
-class Config(ConfigParser.ConfigParser):
+class Config(configparser.ConfigParser):
     """
     Config interface.
     """
-
     def __init__(self, fname):
         """Initialize Config."""
-        ConfigParser.ConfigParser.__init__(self)
+        configparser.ConfigParser.__init__(self)
         self.read(fname)
 
     def get_data_provider(self, net_spec):
@@ -30,7 +29,6 @@ class TrainConfig(Config):
     """
     TrainConfig.
     """
-
     def __init__(self, fname):
         """Initialize TrainConfig."""
         Config.__init__(self, fname)
@@ -94,11 +92,13 @@ class ForwardConfig(Config):
         """Initialize ForwardConfig."""
         Config.__init__(self, fname)
 
-    def net(self):
+    def net(self, net_path):
         """Create an inference net."""
         model   = self.get('forward','model')
         weights = self.get('forward','weights')
-        return caffe.Net(model, weights, caffe.TEST)
+        z = pznet.znet()
+        z.load_net(net_path)
+        return z 
 
     def get_data_provider(self, net_spec):
         """Create a data provider for inference."""
@@ -116,7 +116,7 @@ if __name__ == "__main__":
 
     config_path = 'train.cfg.example'
     train_cfg = TrainConfig(config_path)
-    print train_cfg.to_proto()
+    print(train_cfg.to_proto())
 
     solver = train_cfg.get_solver()
-    print solver.max_iter
+    print(solver.max_iter)
